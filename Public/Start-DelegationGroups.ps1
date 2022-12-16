@@ -6,7 +6,7 @@
         [System.Collections.IDictionary] $Groups
     )
     $Properties = @('Name', 'Description', 'DisplayName', 'GroupScope', 'GroupCategory')
-    $PropertiesChangable = @('Description', 'DisplayName', 'GroupScope', 'GroupCategory')
+    $PropertiesChangable = @('Description', 'DisplayName')
 
     $BasePath = ConvertTo-DistinguishedName -CanonicalName $Domain
     if (-not $BasePath) {
