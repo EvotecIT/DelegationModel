@@ -10,6 +10,12 @@
     }
     foreach ($CanonicalNameOU in $Definition.Keys) {
         $ConfigurationOU = $Definition[$CanonicalNameOU]
-        New-OUStructure -CanonicalNameOU $CanonicalNameOU -ConfigurationOU $ConfigurationOU
+        New-OUStructure -CanonicalNameOU $CanonicalNameOU -ConfigurationOU $ConfigurationOU -BasePath $BasePath
+    }
+    foreach ($CanonicalNameOU in $Definition.Keys) {
+        $ConfigurationOU = $Definition[$CanonicalNameOU]
+        if ($ConfigurationOU.Delegation) {
+            New-DelegationModel -Domain $Domain -CanonicalNameOU $CanonicalNameOU -ConfigurationOU $ConfigurationOU -BasePath $BasePath
+        }
     }
 }
