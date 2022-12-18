@@ -13,6 +13,7 @@
     PrivateData          = @{
         PSData = @{
             Tags                       = @('Windows')
+            ProjectUri                 = 'https://github.com/EvotecIT/DelegationModel'
             ExternalModuleDependencies = @('ActiveDirectory')
         }
     }
