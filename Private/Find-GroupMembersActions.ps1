@@ -2,10 +2,11 @@
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [string] $Identity,
-        [Array] $ExpectedMembers
+        [Array] $ExpectedMembers,
+        [string] $DC
     )
     $CacheMembers = [ordered] @{}
-    $MemberExists = Get-ADGroupMember -Identity $Identity
+    $MemberExists = Get-ADGroupMember -Identity $Identity -Server $DC
     foreach ($Member in $MemberExists) {
         $CacheMembers[$Member.SamAccountName] = $Member
         $CacheMembers[$Member.DistinguishedName] = $Member
@@ -32,7 +33,7 @@
 
     foreach ($Member in $MemberToRemove) {
         try {
-            Remove-ADGroupMember -Identity $Group -Members $Member -ErrorAction Stop -Confirm:$false
+            Remove-ADGroupMember -Identity $Group -Members $Member -ErrorAction Stop -Confirm:$false -Server $DC
             Write-Color -Text '[+] ', "Member ", $Member, " removed from $Group" -Color Green, White, Green, White
         } catch {
             Write-Color -Text '[-] ', "Member ", $Member, " removal from $Group failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
@@ -40,7 +41,7 @@
     }
     foreach ($Member in $MemberToAdd) {
         try {
-            Add-ADGroupMember -Identity $Group -Members $Member -ErrorAction Stop
+            Add-ADGroupMember -Identity $Group -Members $Member -ErrorAction Stop -Server $DC
             Write-Color -Text '[+] ', "Member ", $Member, " added to $Group" -Color Green, White, Green, White
         } catch {
             Write-Color -Text '[-] ', "Member ", $Member, " addition to $Group failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow

@@ -3,7 +3,8 @@
     param(
         [string] $CanonicalNameOU,
         [System.Collections.IDictionary] $ConfigurationOU,
-        [string] $BasePath
+        [string] $BasePath,
+        [string] $DC
     )
     $IgnoredProperties = @('Delegation', 'DelegationInheritance')
     $PartsOU = $CanonicalNameOU.Split("\")
@@ -51,6 +52,7 @@
         Write-Color -Text '[+] ', "Updating OU ", $CurrentPath -Color Green, White
         $setADOrganizationalUnitSplat = @{
             Identity = $CurrentPath
+            Server   = $DC
             #Description = $Description
             #ProtectedFromAccidentalDeletion = $ProtectedFromAccidentalDeletion
         }
