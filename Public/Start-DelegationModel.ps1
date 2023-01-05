@@ -8,9 +8,12 @@
     if (-not $BasePath) {
         return
     }
+    $ForestInformation = Get-WinADForestDetails
+    $DC = $ForestInformation['QueryServers'][$Domain].HostName[0]
+
     foreach ($CanonicalNameOU in $Definition.Keys) {
         $ConfigurationOU = $Definition[$CanonicalNameOU]
-        New-OUStructure -CanonicalNameOU $CanonicalNameOU -ConfigurationOU $ConfigurationOU -BasePath $BasePath
+        New-OUStructure -CanonicalNameOU $CanonicalNameOU -ConfigurationOU $ConfigurationOU -BasePath $BasePath -DC $DC
     }
     foreach ($CanonicalNameOU in $Definition.Keys) {
         $ConfigurationOU = $Definition[$CanonicalNameOU]
