@@ -2,10 +2,11 @@
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [string] $Identity,
-        [string] $Group
+        [string] $Group,
+        [string] $DC
     )
     $CacheMembers = [ordered] @{}
-    $MemberExists = Get-ADGroupMember -Identity $Identity
+    $MemberExists = Get-ADGroupMember -Identity $Identity -Server $DC
     foreach ($Member in $MemberExists) {
         $CacheMembers[$Member.SamAccountName] = $Member
         $CacheMembers[$Member.DistinguishedName] = $Member
@@ -16,7 +17,7 @@
             Write-Color -Text '[-] ', "Member ", $Group, " already exists in ", $Identity -Color Red, Yellow, Red, Yellow
             continue
         }
-        Add-ADGroupMember -Identity $Identity -Members $Group -ErrorAction Stop
+        Add-ADGroupMember -Identity $Identity -Members $Group -ErrorAction Stop -Server $DC
         Write-Color -Text '[+] ', "Member ", $Group, " added to $Identity" -Color Green, White, Green, White
     } catch {
         Write-Color -Text '[-] ', "Member ", $Group, " addition to $Identity failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
