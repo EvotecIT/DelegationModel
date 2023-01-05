@@ -1,9 +1,11 @@
 ﻿function Start-DelegationGroups {
     [CmdletBinding(SupportsShouldProcess)]
     param(
+        [scriptblock] $DelegationGroupsDefinition,
         [Parameter()][string] $Destination,
         [Parameter(Mandatory)][string] $Domain,
-        [System.Collections.IDictionary] $Groups
+        [System.Collections.IDictionary] $Groups,
+        [string[]][ValidateSet('Add', 'Remove')] $MembersBehaviour
     )
     $Properties = @('Name', 'Description', 'DisplayName', 'GroupScope', 'GroupCategory', 'ProtectedFromAccidentalDeletion')
     $PropertiesChangable = @('Description', 'DisplayName', 'ProtectedFromAccidentalDeletion', 'Path')
@@ -13,9 +15,15 @@
     if (-not $BasePath) {
         return
     }
-
     $ForestInformation = Get-WinADForestDetails
     $DC = $ForestInformation['QueryServers'][$Domain].HostName[0]
+
+    if ($PSBoundParameters.ContainsKey('DelegationGroupsDefinition')) {
+        $DelegationOutput = & $DelegationGroupsDefinition
+        $Groups = Convert-DelegationGroups -GroupInformation $DelegationOutput -Destination $Destination -MembersBehaviour $MembersBehaviour
+    } else {
+        $Groups = Convert-DelegationGroups -Groups $Groups -Destination $Destination -MembersBehaviour $MembersBehaviour
+    }
 
     $OUCheck = $true
     foreach ($Group in $Groups.Keys) {
@@ -62,7 +70,7 @@
         Write-Color -Text "[i] ", "Processing Members for groups" -Color DarkBlue, White
         foreach ($Group in $Groups.Keys) {
             if ($null -ne $Groups[$Group].Members) {
-                Find-GroupMembersActions -Identity $Group -ExpectedMembers $Groups[$Group].Members -DC $DC
+                Find-GroupMembersActions -Identity $Group -ExpectedMembers $Groups[$Group].Members -DC $DC -MembersBehaviour $Groups[$Group].MembersBehaviour
             }
         }
         # MemberOf we will not attempt to cleanup as this may be some special group
