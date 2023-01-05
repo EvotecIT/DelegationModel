@@ -6,7 +6,7 @@
     CompatiblePSEditions = @('Desktop')
     Copyright            = '(c) 2011 - 2023 Przemyslaw Klys @ Evotec. All rights reserved.'
     Description          = 'DelegationModel is a PowerShell module to create and manage delegation model'
-    FunctionsToExport    = @('Start-DelegationGroups', 'Start-DelegationModel')
+    FunctionsToExport    = @('New-DelegationGroup', 'Start-DelegationGroups', 'Start-DelegationModel')
     GUID                 = '25a17911-7a7a-4c86-8543-aefb907874f7'
     ModuleVersion        = '0.0.3'
     PowerShellVersion    = '5.1'
