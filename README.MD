@@ -20,3 +20,19 @@
 # DelegtionModel
 
 **DelegtionModel** PowerShell module provides a simplified way to manage delegation in Active Directory. It's based on [ADEssentials](https://github.com/EvotecIT/ADEssentials) module and builts on top of it.
+
+## ToDO
+
+- [ ] add support for changing group scope
+- [x] add support for moving groups based on path change
+- [ ] add support for reruning the script multiple times until nothing is left
+- [ ] add support for members behavior (replace, add, remove)
+- [ ] add support for ProtectedFromAccidentalDeletion
+- [ ] add support for AuditMode
+  - [ ] Groups
+  - [ ] Delegation
+- [ ] Detect if user is enabled for members
+- [ ] Specify global options to use
+- [ ] Add file/folder for Sysvol and Netlogon delegation
+- [ ] Backup / Restore
+- [ ] Verify delegation model
