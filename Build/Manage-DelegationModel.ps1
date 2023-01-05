@@ -7,7 +7,7 @@ $Configuration = @{
 
         Manifest          = @{
             # Version number of this module.
-            ModuleVersion              = '0.0.1'
+            ModuleVersion              = '0.0.X'
             # Supported PSEditions
             CompatiblePSEditions       = @('Desktop')
             # ID used to uniquely identify this module
@@ -26,11 +26,14 @@ $Configuration = @{
             # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
             Tags                       = @('Windows')
             #IconUri              = 'https://evotec.xyz/wp-content/uploads/2018/10/PSSharedGoods-Alternative.png'
-            #ProjectUri                 = 'https://github.com/EvotecIT/Transferetto'
+
+            ProjectUri                 = 'https://github.com/EvotecIT/DelegationModel'
+
             RequiredModules            = @(
                 #@{ ModuleName = 'PSSharedGoods'; ModuleVersion = "Latest"; Guid = 'ee272aa8-baaa-4edf-9f45-b6d6f7d844fe' }
-                @{ ModuleName = 'Mailozaurr'; ModuleVersion = "Latest"; Guid = '2b0ea9f1-3ff1-4300-b939-106d5da608fa' }
+                #@{ ModuleName = 'Mailozaurr'; ModuleVersion = "Latest"; Guid = '2b0ea9f1-3ff1-4300-b939-106d5da608fa' }
                 @{ ModuleName = 'PSWriteHTML'; ModuleVersion = "Latest"; Guid = 'a7bdf640-f5cb-4acf-9de0-365b322d245c' }
+                @{ ModuleName = 'ADEssentials'; ModuleVersion = "Latest"; Guid = '9fc9fd61-7f11-4f4b-a527-084086f1905f' }
             )
             ExternalModuleDependencies = @(
                 'ActiveDirectory'
@@ -103,7 +106,7 @@ $Configuration = @{
                 RemoveComments = $false
             }
             Integrate      = @{
-                ApprovedModules = @('EFILM', 'Graphimo', 'PSSharedGoods', 'PSWriteColor', 'Connectimo', 'PSUnifi', 'PSWebToolbox', 'PSMyPassword', 'O365EmailAddressPolicy')
+                ApprovedModules = @('Graphimo', 'PSSharedGoods', 'PSWriteColor', 'Connectimo', 'PSUnifi', 'PSWebToolbox', 'PSMyPassword', 'O365EmailAddressPolicy')
             }
         }
         Standard          = @{
