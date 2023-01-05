@@ -5,20 +5,25 @@
         [Parameter(Mandatory)][string] $Domain,
         [System.Collections.IDictionary] $Groups
     )
-    $Properties = @('Name', 'Description', 'DisplayName', 'GroupScope', 'GroupCategory')
-    $PropertiesChangable = @('Description', 'DisplayName')
+    $Properties = @('Name', 'Description', 'DisplayName', 'GroupScope', 'GroupCategory', 'ProtectedFromAccidentalDeletion')
+    $PropertiesChangable = @('Description', 'DisplayName', 'ProtectedFromAccidentalDeletion', 'Path')
+    $StandardChangable = @("GroupCategory", "GroupScope", "Name", "Path", "ProtectedFromAccidentalDeletion")
 
     $BasePath = ConvertTo-DistinguishedName -CanonicalName $Domain
     if (-not $BasePath) {
         return
     }
 
+    $ForestInformation = Get-WinADForestDetails
+    $DC = $ForestInformation['QueryServers'][$Domain].HostName[0]
+
     $OUCheck = $true
     foreach ($Group in $Groups.Keys) {
+        # we need to check whether OU exists first, if not terminate and ask user to create it
         $GroupObject = $Groups[$Group]
         if ($GroupObject.Path) {
             try {
-                $null = Get-ADOrganizationalUnit -Identity $GroupObject.Path -ErrorAction Stop
+                $null = Get-ADOrganizationalUnit -Identity $GroupObject.Path -ErrorAction Stop -Server $DC
             } catch {
                 $OUCheck = $false
                 Write-Color -Text '[-] ', "Path OU $($GroupObject.Path)", " verification failed. Please create all organizational Units before continuing. Error: ", $_.Exception.Message -Color Red, Yellow, White
@@ -26,6 +31,7 @@
         }
     }
     if ($OUCheck) {
+        # lets fix the groups
         Write-Color -Text "[i] ", "Processing creation of groups" -Color DarkBlue, White
         foreach ($Group in $Groups.Keys) {
             $GroupObject = $Groups[$Group]
@@ -39,8 +45,9 @@
                 DisplayName   = if ($GroupObject.DisplayName) { $GroupObject.DisplayName } else { $Group }
             }
             Remove-EmptyValue -Hashtable $newADGroupSplat
-            $GroupExists = Get-ADGroup -Filter "Name -eq '$Group'" -Properties $Properties
+            $GroupExists = Get-ADGroup -Filter "Name -eq '$Group'" -Properties $Properties -Server $DC
             if (-not $GroupExists) {
+                # if the group does not exist, we will create it
                 try {
                     $null = New-ADGroup @newADGroupSplat -ErrorAction Stop
                     Write-Color -Text '[+] ', "Group ", $Group, " created" -Color Green, White, Green, White
@@ -48,28 +55,14 @@
                     Write-Color -Text '[-] ', "Group ", $Group, " creation failed. Error: ", $_.Exception.Message -Color Red, White, Red, White
                 }
             } else {
-                Write-Color -Text '[-] ', "Group ", $Group, " already exists" -Color Red, White, Yellow, White
-                foreach ($Key in $PropertiesChangable) {
-                    # we need to check whether key is defined at all and user wants to update it
-                    if ($null -ne $GroupObject.$Key -and $GroupExists.$Key -ne $GroupObject.$Key) {
-                        try {
-                            # we need to make sure DisplayName, Name are not empty, rest can be empty
-                            if ($Key -in @('DisplayName', 'Name') -and -not $Key) {
-                                continue
-                            }
-                            Set-ADGroup -Identity $Group -Replace @{ $Key = $GroupObject.$Key } -ErrorAction Stop
-                            Write-Color -Text '[+] ', "Group ", $Group, " ", $Key, " updated" -Color Green, White, Green, White, Green, White
-                        } catch {
-                            Write-Color -Text '[-] ', "Group ", $Group, " ", $Key, " update failed. Error: ", $_.Exception.Message -Color Red, White, Red, White, Red
-                        }
-                    }
-                }
+                # if the group exists, we will check whether it needs to be updated
+                Repair-GroupData -Group $Group -PropertiesChangable $PropertiesChangable -StandardChangable $StandardChangable -GroupObject $GroupObject -GroupExists $GroupExists -DC $DC
             }
         }
         Write-Color -Text "[i] ", "Processing Members for groups" -Color DarkBlue, White
         foreach ($Group in $Groups.Keys) {
             if ($null -ne $Groups[$Group].Members) {
-                Find-GroupMembersActions -Identity $Group -ExpectedMembers $Groups[$Group].Members
+                Find-GroupMembersActions -Identity $Group -ExpectedMembers $Groups[$Group].Members -DC $DC
             }
         }
         # MemberOf we will not attempt to cleanup as this may be some special group
@@ -77,7 +70,7 @@
         foreach ($Group in $Groups.Keys) {
             if ($null -ne $Groups[$Group].MemberOf) {
                 foreach ($MemberOf in $Groups[$Group].MemberOf) {
-                    Add-GroupMembersOf -Identity $MemberOf -Group $Group
+                    Add-GroupMembersOf -Identity $MemberOf -Group $Group -DC $DC
                 }
             }
         }
