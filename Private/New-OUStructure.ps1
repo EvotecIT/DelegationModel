@@ -1,10 +1,10 @@
 ﻿function New-OUStructure {
     [cmdletBinding()]
     param(
-        [string] $CanonicalNameOU,
-        [System.Collections.IDictionary] $ConfigurationOU,
-        [string] $BasePath,
-        [string] $DC
+        [Parameter(Mandatory)][string] $CanonicalNameOU,
+        [Parameter(Mandatory)][System.Collections.IDictionary] $ConfigurationOU,
+        [Parameter(Mandatory)][string] $BasePath,
+        [Parameter(Mandatory)][string] $DC
     )
     $IgnoredProperties = @('Delegation', 'DelegationInheritance')
     $PartsOU = $CanonicalNameOU.Split("\")
