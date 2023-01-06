@@ -16,6 +16,10 @@
         return
     }
     $ForestInformation = Get-WinADForestDetails
+    if (-not $ForestInformation) {
+        Write-Color -Text '[-] ', "Forest information could not be retrieved. Please check your connection to the domain controller." -Color Red, White
+        return
+    }
     $DC = $ForestInformation['QueryServers'][$Domain].HostName[0]
 
     if ($PSBoundParameters.ContainsKey('DelegationGroupsDefinition')) {
