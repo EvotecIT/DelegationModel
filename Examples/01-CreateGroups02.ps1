@@ -7,7 +7,7 @@ $OUPath = "OU=Administration_Tasks_Groups,OU=Administration,$DomainDN"
 
 Start-DelegationGroups -MembersBehaviour 'Add', 'Remove' -Destination 'OU=Delegation,OU=Groups,OU=Production,DC=ad,DC=evotec,DC=xyz' -Domain 'ad.evotec.xyz' -Verbose {
     foreach ($AdministrativeUnit in $AdministrativeUnits) {
-        New-DelegationGroup -Name "DL_Tier2_PUIDs_A_$AdministrativeUnit" -Path $OUPath -GroupScope 'DomainLocal' -GroupCategory 'Security' -Description 'Testing description' -DisplayName "DL_Tier2_PUIDs_A_$AdministrativeUnit" -ProtectedFromAccidentalDeletion
+        New-DelegationGroup -Name "DL_Tier2_PUIDs_A_$AdministrativeUnit" -Path $OUPath -GroupScope 'DomainLocal' -GroupCategory 'Security' -Description 'Testing description 1' -DisplayName "DL_Tier2_PUIDs_A_$AdministrativeUnit" -ProtectedFromAccidentalDeletion $false
         New-DelegationGroup -Name "DL_Tier2_Groups_A_$AdministrativeUnit" -Path $OUPath -GroupScope 'DomainLocal' -GroupCategory 'Security'
         New-DelegationGroup -Name "DL_Tier2_Contacts_A_$AdministrativeUnit" -Path $OUPath -GroupScope 'DomainLocal' -GroupCategory 'Security'
         New-DelegationGroup -Name "DL_Tier2_Computers_A_$AdministrativeUnit" -Path $OUPath -GroupScope 'DomainLocal' -GroupCategory 'Security'
