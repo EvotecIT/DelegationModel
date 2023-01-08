@@ -4,13 +4,6 @@ Import-Module .\DelegationModel.psd1 -Force
 $Domain = 'ad.evotec.xyz'
 $AdministrativeUnit = 'FR_IT_Team06'
 
-$Global = @{
-    Domain                          = $Domain
-    AdministrativeUnit              = $AdministrativeUnit
-    #Description                     = "Accounts for users in $AdministrativeUnit"
-    ProtectedFromAccidentalDeletion = $true
-}
-
 $OUDefinition = @{
     "Tier2\Accounts01\$AdministrativeUnit"  = @{
         Description                     = "Accounts for users in $AdministrativeUnit"
