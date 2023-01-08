@@ -11,5 +11,5 @@
     if ($null -ne $ConfigurationOU.DelegationInheritance) {
         Set-ADACLInheritance -ADObject $DNOU -Inheritance $ConfigurationOU.DelegationInheritance
     }
-    Set-ADACL -ADObject $DNOU -ACLSettings $ConfigurationOU.Delegation -Inheritance $ConfigurationOU.DelegationInheritance
+    Set-ADACL -ADObject $DNOU -ACLSettings $ConfigurationOU.Delegation -Inheritance $ConfigurationOU.DelegationInheritance -WarningAction SilentlyContinue
 }
