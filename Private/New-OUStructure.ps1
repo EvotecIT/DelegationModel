@@ -13,6 +13,7 @@
     for ($i = 0; $i -lt $PartsOU.Length; $i++) {
         $O = $PartsOU[$i]
         $CurrentPath = 'OU=' + $O + ',' + $LevelPath
+        $CanonicalCurrentPath = ConvertFrom-DistinguishedName -DistinguishedName ($CurrentPath.Replace(",$BasePath", "")) -ToCanonicalName
 
         # lets create new OU, but if it exists we will just inform user
         try {
@@ -35,41 +36,35 @@
                 #Write-Color -Text '[!] ', "No OU will be created ", $CurrentPath -Color Red, White
             } else {
                 New-ADOrganizationalUnit @newADOrganizationalUnitSplat
-                #Write-Verbose -Message "New-OUStructure - Created new OU $CurrentPath"
-                Write-Color -Text '[+] ', "Created new OU ", $CurrentPath -Color Green, White
+                Write-Color -Text '[+]', "[$CanonicalCurrentPath]", "[Adding]", " Added new organizational unit" -Color Green, DarkGray, Green, White
             }
         } catch {
             if ($_.Exception.Message -notlike '*with a name that is already in use*') {
-                #Write-Warning -Message "New-OUStructure - Error: $($5_.Exception.message)"
-                Write-Color -Text '[!] ', "Error: ", $_.Exception.message -Color Red, White
+                Write-Color -Text '[!]', "[$CanonicalCurrentPath]", "[Error]", " Error $($_.Exception.message)" -Color Red, DarkGray, Yellow, DarkMagenta, White
             } else {
-                #Write-Verbose -Message "New-OUStructure - Skipped new OU $CurrentPath, already exists."
-                Write-Color -Text '[!] ', "Skipped new OU ", $CurrentPath, ", already exists." -Color Red, White
+                Write-Color -Text '[*]', "[$CanonicalCurrentPath]", "[Skipping]", " Skipped new organizational unit, already exists!" -Color DarkMagenta, DarkGray, Yellow, DarkMagenta, White
             }
         }
-        # once the OU is created we should update it with DEscription,
-        # Write-Verbose -Message "New-OUStructure - Updating OU $CurrentPath"
-        Write-Color -Text '[+] ', "Updating OU ", $CurrentPath -Color Green, White
+        # once the OU is created we should update it with additional fields
         $setADOrganizationalUnitSplat = @{
             Identity = $CurrentPath
             Server   = $DC
-            #Description = $Description
-            #ProtectedFromAccidentalDeletion = $ProtectedFromAccidentalDeletion
         }
 
-        if ($i -eq ($PartsOU.Count - 1)) {
+        $PropertiesToUpdate = if ($i -eq ($PartsOU.Count - 1)) {
             foreach ($V in $ConfigurationOU.Keys) {
                 if ($V -notin $IgnoredProperties) {
+                    $V
                     $setADOrganizationalUnitSplat[$V] = $ConfigurationOU[$V]
                 }
             }
         }
-        if ($setADOrganizationalUnitSplat.Count -eq 1) {
-            #Write-Verbose -Message "New-OUStructure - Nothing to update for OU $CurrentPath"
-            Write-Color -Text '[!] ', "Nothing to update for OU ", $CurrentPath -Color Red, White
-            continue
+        if ($setADOrganizationalUnitSplat.Count -eq 2) {
+            #Write-Color -Text '[!] ', "Nothing to update for OU ", $CurrentPath -Color Red, White
+        } else {
+            Write-Color -Text '[+]', "[$CanonicalCurrentPath]", "[Updating]", " Updating organizational unit with fields: ", ($PropertiesToUpdate -join ", ") -Color Green, DarkGray, Green, White
+            Set-ADOrganizationalUnit @setADOrganizationalUnitSplat
         }
-        Set-ADOrganizationalUnit @setADOrganizationalUnitSplat
         $LevelPath = 'OU=' + $O + ',' + $LevelPath
     }
 }
