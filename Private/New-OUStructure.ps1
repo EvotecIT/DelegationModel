@@ -6,7 +6,7 @@
         [Parameter(Mandatory)][string] $BasePath,
         [Parameter(Mandatory)][string] $DC
     )
-    $IgnoredProperties = @('Delegation', 'DelegationInheritance')
+    $IgnoredProperties = @('Delegation', 'DelegationInheritance', 'CanonicalNameOU')
     $PartsOU = $CanonicalNameOU.Split("\")
 
     $LevelPath = $BasePath
