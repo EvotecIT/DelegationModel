@@ -4,6 +4,7 @@
 - Added new way to manage groups, the old one is still valid
 - Improved groups creation, modification
 - Added `ProtectedFromAccidentalDeletion` as a feature
+- Fixes OU creation, where it would create some OUs at the root by mistake
 
 ```powershell
 Start-DelegationGroups -MembersBehaviour 'Add', 'Remove' -Destination 'OU=Delegation,OU=Groups,OU=Production,DC=ad,DC=evotec,DC=xyz' -Domain 'ad.evotec.xyz' -Verbose {
