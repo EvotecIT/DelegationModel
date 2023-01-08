@@ -14,15 +14,20 @@
         PSData = @{
             Tags                       = @('Windows')
             ProjectUri                 = 'https://github.com/EvotecIT/DelegationModel'
+            IconUri                    = 'https://evotec.xyz/wp-content/uploads/2023/01/DelegationModel.png'
             ExternalModuleDependencies = @('ActiveDirectory')
         }
     }
     RequiredModules      = @(@{
+            ModuleVersion = '0.0.255'
+            ModuleName    = 'PSSharedGoods'
+            Guid          = 'ee272aa8-baaa-4edf-9f45-b6d6f7d844fe'
+        }, @{
             ModuleVersion = '0.0.180'
             ModuleName    = 'PSWriteHTML'
             Guid          = 'a7bdf640-f5cb-4acf-9de0-365b322d245c'
         }, @{
-            ModuleVersion = '0.0.149'
+            ModuleVersion = '0.0.150'
             ModuleName    = 'ADEssentials'
             Guid          = '9fc9fd61-7f11-4f4b-a527-084086f1905f'
         }, 'ActiveDirectory')
