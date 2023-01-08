@@ -5,7 +5,8 @@
         [Parameter()][string] $Destination,
         [Parameter(Mandatory)][string] $Domain,
         [System.Collections.IDictionary] $Groups,
-        [string[]][ValidateSet('Add', 'Remove')] $MembersBehaviour
+        [string[]][ValidateSet('Add', 'Remove')] $MembersBehaviour,
+        [bool] $ProtectedFromAccidentalDeletion
     )
     $Properties = @('Name', 'Description', 'DisplayName', 'GroupScope', 'GroupCategory', 'ProtectedFromAccidentalDeletion')
     $PropertiesChangable = @('Description', 'DisplayName', 'ProtectedFromAccidentalDeletion', 'Path')
@@ -24,9 +25,9 @@
 
     if ($PSBoundParameters.ContainsKey('DelegationGroupsDefinition')) {
         $DelegationOutput = & $DelegationGroupsDefinition
-        $Groups = Convert-DelegationGroups -GroupInformation $DelegationOutput -Destination $Destination -MembersBehaviour $MembersBehaviour
+        $Groups = Convert-DelegationGroups -GroupInformation $DelegationOutput -Destination $Destination -MembersBehaviour $MembersBehaviour -ProtectedFromAccidentalDeletion $ProtectedFromAccidentalDeletion
     } else {
-        $Groups = Convert-DelegationGroups -Groups $Groups -Destination $Destination -MembersBehaviour $MembersBehaviour
+        $Groups = Convert-DelegationGroups -Groups $Groups -Destination $Destination -MembersBehaviour $MembersBehaviour -ProtectedFromAccidentalDeletion $ProtectedFromAccidentalDeletion
     }
 
     $OUCheck = $true
