@@ -11,7 +11,7 @@
         [string[]][ValidateSet('Add', 'Remove')] $MembersBehaviour,
         [string[]] $Members,
         [string[]] $MemberOf,
-        [switch] $ProtectedFromAccidentalDeletion
+        [bool] $ProtectedFromAccidentalDeletion
     )
     [ordered] @{
         Name                            = $Name
@@ -20,7 +20,7 @@
         Description                     = $Description
         GroupScope                      = $GroupScope
         GroupCategory                   = $GroupCategory
-        ProtectedFromAccidentalDeletion = $ProtectedFromAccidentalDeletion.IsPresent
+        ProtectedFromAccidentalDeletion = if ($PSBoundParameters.ContainsKey('ProtectedFromAccidentalDeletion')) { $ProtectedFromAccidentalDeletion } else { $null }
         MembersBehaviour                = $MembersBehaviour
         Members                         = if ($PSBoundParameters.ContainsKey('Members')) { $Members } else { $null }
         MemberOf                        = if ($PSBoundParameters.ContainsKey('MemberOf')) { $MemberOf } else { $null }
