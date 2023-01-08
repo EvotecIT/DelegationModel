@@ -5,7 +5,7 @@
         [parameter(Mandatory)][string] $CanonicalNameOU,
         [string] $Description,
         [ValidateSet('Enabled', 'Disabled')][string] $DelegationInheritance,
-        [Array] $Delegation,
+        [alias('DelegationRights')][Array] $Delegation,
         [bool] $ProtectedFromAccidentalDeletion
     )
 
