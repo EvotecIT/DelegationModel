@@ -32,7 +32,9 @@
         [System.Collections.IDictionary[]] $GroupInformation,
         [System.Collections.IDictionary[]] $Groups,
         [string] $Destination,
-        [string[]][ValidateSet('Add', 'Remove')] $MembersBehaviour
+        [string[]][ValidateSet('Add', 'Remove')] $MembersBehaviour,
+        [bool] $ProtectedFromAccidentalDeletion
+
     )
     if ($GroupInformation) {
         $GroupsInfo = [ordered] @{}
@@ -44,7 +46,7 @@
                 Description                     = $Group.Description
                 GroupScope                      = $Group.GroupScope
                 GroupCategory                   = $Group.GroupCategory
-                ProtectedFromAccidentalDeletion = $Group.ProtectedFromAccidentalDeletion
+                ProtectedFromAccidentalDeletion = if ($null -eq $Group.ProtectedFromAccidentalDeletion) { $ProtectedFromAccidentalDeletion } else { $Group.ProtectedFromAccidentalDeletion }
                 MembersBehaviour                = if ($Group.MembersBehaviour) { $Group.MembersBehaviour } else { $MembersBehaviour }
                 Members                         = if ($Group.Members) { $Group.Members } else { $null }
                 MemberOf                        = if ($Group.MemberOf) { $Group.MemberOf } else { $null }
@@ -62,7 +64,7 @@
                 Description                     = $Group.Description
                 GroupScope                      = $Group.GroupScope
                 GroupCategory                   = $Group.GroupCategory
-                ProtectedFromAccidentalDeletion = $Group.ProtectedFromAccidentalDeletion
+                ProtectedFromAccidentalDeletion = if ($null -eq $Group.ProtectedFromAccidentalDeletion) { $ProtectedFromAccidentalDeletion } else { $Group.ProtectedFromAccidentalDeletion }
                 MembersBehaviour                = if ($Group.MembersBehaviour) { $Group.MembersBehaviour } else { $MembersBehaviour }
                 Members                         = if ($Group.Members) { $Group.Members } else { $null }
                 MemberOf                        = if ($Group.MemberOf) { $Group.MemberOf } else { $null }
