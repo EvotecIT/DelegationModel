@@ -3,7 +3,8 @@
     param(
         [string] $Identity,
         [string] $Group,
-        [string] $DC
+        [string] $DC,
+        [ValidateSet('Add', 'Remove', 'Skip')][string[]] $LogOption
     )
     $CacheMembers = [ordered] @{}
     $MemberExists = Get-ADGroupMember -Identity $Identity -Server $DC
@@ -14,12 +15,16 @@
     }
     try {
         if ($CacheMembers[$Group]) {
-            Write-Color -Text '[-] ', "Member ", $Group, " already exists in ", $Identity -Color Red, Yellow, Red, Yellow
+            if ($LogOption -contains 'Skip') {
+                Write-Color -Text '[s] ', "Member ", $Group, " already exists in ", $Identity -Color DarkMagenta, Yellow, DarkMagenta, Yellow
+            }
             continue
         }
         Add-ADGroupMember -Identity $Identity -Members $Group -ErrorAction Stop -Server $DC
-        Write-Color -Text '[+] ', "Member ", $Group, " added to $Identity" -Color Green, White, Green, White
+        if ($LogOption -contains 'Add') {
+            Write-Color -Text '[+] ', "Member ", $Group, " added to $Identity" -Color Green, White, Green, White
+        }
     } catch {
-        Write-Color -Text '[-] ', "Member ", $Group, " addition to $Identity failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
+        Write-Color -Text '[!] ', "Member ", $Group, " addition to $Identity failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
     }
 }
