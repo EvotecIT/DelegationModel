@@ -6,9 +6,12 @@
         [Array] $StandardChangable,
         [Microsoft.ActiveDirectory.Management.ADGroup] $GroupExists,
         [System.Collections.IDictionary]$GroupObject,
-        [string] $DC
+        [string] $DC,
+        [ValidateSet('Add', 'Remove', 'Skip')][string[]] $LogOption
     )
-    Write-Color -Text '[-] ', "Group ", $Group, " already exists" -Color Red, White, Yellow, White
+    if ($LogOption -contains 'Skip') {
+        Write-Color -Text '[s] ', "Group ", $Group, " already exists" -Color DarkMagenta, White, DarkMagenta, White
+    }
     foreach ($Key in $PropertiesChangable) {
         # we need to check whether key is defined at all and user wants to update it
         if ($null -ne $GroupObject.$Key -and $GroupExists.$Key -ne $GroupObject.$Key) {
@@ -28,9 +31,11 @@
                 } else {
                     Set-ADGroup -Identity $Group -Replace @{ $Key = $GroupObject.$Key } -ErrorAction Stop -Server $DC
                 }
-                Write-Color -Text '[+] ', "Group ", $Group, " ", $Key, " updated" -Color Green, White, Green, White, Green, White
+                if ($LogOption -contains 'Add') {
+                    Write-Color -Text '[+] ', "Group ", $Group, " ", $Key, " updated" -Color Green, White, Green, White, Green, White
+                }
             } catch {
-                Write-Color -Text '[-] ', "Group ", $Group, " ", $Key, " update failed. Error: ", $_.Exception.Message -Color Red, White, Red, White, Red
+                Write-Color -Text '[!] ', "Group ", $Group, " ", $Key, " update failed. Error: ", $_.Exception.Message -Color Red, White, Red, White, Red
             }
         }
     }
@@ -41,18 +46,20 @@
             try {
                 Set-ADObject -ProtectedFromAccidentalDeletion $false -Identity $GroupExists.DistinguishedName -ErrorAction Stop -Server $DC
             } catch {
-                Write-Color -Text '[-] ', "Group ", $Group, " move to ", $GroupObject.Path, " failed. Couldn't disable ProtectedFromAccidentalDeletion. Error: ", $_.Exception.Message -Color Red, White, Red, White, Red
+                Write-Color -Text '[!] ', "Group ", $Group, " move to ", $GroupObject.Path, " failed. Couldn't disable ProtectedFromAccidentalDeletion. Error: ", $_.Exception.Message -Color Red, White, Red, White, Red
                 $ProtectedFromAccidentalDeletionFailed = true
             }
         }
         if (-not $ProtectedFromAccidentalDeletionFailed) {
             $MoveFailed = $false
             try {
-                $Test = Move-ADObject -Identity $GroupExists.DistinguishedName -TargetPath $GroupObject.Path -ErrorAction Stop -Server $DC
-                Write-Color -Text '[+] ', "Group ", $Group, " moved to ", $GroupObject.Path -Color Green, White, Green, White
+                $null = Move-ADObject -Identity $GroupExists.DistinguishedName -TargetPath $GroupObject.Path -ErrorAction Stop -Server $DC
+                if ($LogOption -contains 'Add') {
+                    Write-Color -Text '[+] ', "Group ", $Group, " moved to ", $GroupObject.Path -Color Green, White, Green, White
+                }
             } catch {
                 $MoveFailed = $true
-                Write-Color -Text '[-] ', "Group ", $Group, " move to ", $GroupObject.Path, " failed. Error: ", $_.Exception.Message -Color Red, White, Red, White, Red
+                Write-Color -Text '[!] ', "Group ", $Group, " move to ", $GroupObject.Path, " failed. Error: ", $_.Exception.Message -Color Red, White, Red, White, Red
             }
             if (-not $MoveFailed) {
                 $PathToGroup = $GroupObject.Path
@@ -63,7 +70,7 @@
                 try {
                     Set-ADObject -ProtectedFromAccidentalDeletion $true -Identity $PathToGroup -ErrorAction Stop -Server $DC
                 } catch {
-                    Write-Color -Text '[-] ', "Group ", $Group, " move to ", $GroupObject.Path, " failed (maybe?). Couldn't enable ProtectedFromAccidentalDeletion. Error: ", $_.Exception.Message -Color Red, White, Red, White, Red
+                    Write-Color -Text '[!] ', "Group ", $Group, " move to ", $GroupObject.Path, " failed (maybe?). Couldn't enable ProtectedFromAccidentalDeletion. Error: ", $_.Exception.Message -Color Red, White, Red, White, Red
                 }
             }
 
