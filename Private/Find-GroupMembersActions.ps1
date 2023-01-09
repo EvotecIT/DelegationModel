@@ -4,7 +4,8 @@
         [parameter(Mandatory)][string] $Identity,
         [parameter(Mandatory)][Array] $ExpectedMembers,
         [parameter(Mandatory)][string] $DC,
-        [parameter(Mandatory)][string[]] $MembersBehaviour
+        [parameter(Mandatory)][string[]] $MembersBehaviour,
+        [ValidateSet('Add', 'Remove', 'Skip')][string[]] $LogOption
     )
     $CacheMembers = [ordered] @{}
     $MemberExists = Get-ADGroupMember -Identity $Identity -Server $DC
@@ -37,9 +38,11 @@
         foreach ($Member in $MemberToRemove) {
             try {
                 Remove-ADGroupMember -Identity $Group -Members $Member -ErrorAction Stop -Confirm:$false -Server $DC
-                Write-Color -Text '[+] ', "Member ", $Member, " removed from $Group" -Color Green, White, Green, White
+                if ($LogOption -contains 'Remove') {
+                    Write-Color -Text '[+] ', "Member ", $Member, " removed from $Group" -Color Green, White, Green, White
+                }
             } catch {
-                Write-Color -Text '[-] ', "Member ", $Member, " removal from $Group failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
+                Write-Color -Text '[!] ', "Member ", $Member, " removal from $Group failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
             }
         }
     }
@@ -47,9 +50,11 @@
         foreach ($Member in $MemberToAdd) {
             try {
                 Add-ADGroupMember -Identity $Group -Members $Member -ErrorAction Stop -Server $DC
-                Write-Color -Text '[+] ', "Member ", $Member, " added to $Group" -Color Green, White, Green, White
+                if ($LogOption -contains 'Add') {
+                    Write-Color -Text '[+] ', "Member ", $Member, " added to $Group" -Color Green, White, Green, White
+                }
             } catch {
-                Write-Color -Text '[-] ', "Member ", $Member, " addition to $Group failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
+                Write-Color -Text '[!] ', "Member ", $Member, " addition to $Group failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
             }
         }
     }
