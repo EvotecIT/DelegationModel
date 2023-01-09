@@ -2,19 +2,29 @@
     [CmdletBinding()]
     param(
         $CanonicalNameOU,
-        $OutputFromDelegation
+        $OutputFromDelegation,
+        [ValidateSet('Add', 'Remove', 'Skip')][string[]] $LogOption
     )
     foreach ($Type in @('Skip', 'Add', 'Remove', 'Warnings', 'Errors')) {
         foreach ($D in $OutputFromDelegation.$Type) {
             if ($Type -eq 'Skip') {
+                if ($LogOption -notcontains 'Skip') {
+                    continue
+                }
                 $Action = 'Skipping'
-                $ActionSign = '[i]'
-                $ActionColor = [System.ConsoleColor]::Yellow
+                $ActionSign = '[s]'
+                $ActionColor = [System.ConsoleColor]::DarkMagenta
             } elseif ($Type -eq 'Add') {
+                if ($LogOption -notcontains 'Add') {
+                    continue
+                }
                 $Action = 'Adding'
                 $ActionSign = '[+]'
                 $ActionColor = [System.ConsoleColor]::Green
             } elseif ($Type -eq 'Remove') {
+                if ($LogOption -notcontains 'Remove') {
+                    continue
+                }
                 $Action = 'Removing'
                 $ActionSign = '[-]'
                 $ActionColor = [System.ConsoleColor]::DarkRed
