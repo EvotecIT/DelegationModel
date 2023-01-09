@@ -160,7 +160,7 @@ $Configuration = @{
                     Path    = "$PSScriptRoot\..\Artefacts\Modules"
                 }
                 FilesOutput     = [ordered] @{
-                    "Examples\EFAdminManager.ps1" = "EFAdminManager.ps1"
+                    #"Examples\AdminManager.ps1" = "AdminManager.ps1"
                 }
             }
             RefreshPSD1Only  = $false
