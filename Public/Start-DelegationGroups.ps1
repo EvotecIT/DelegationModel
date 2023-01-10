@@ -5,7 +5,7 @@
         [Parameter()][string] $Destination,
         [Parameter(Mandatory)][string] $Domain,
         [System.Collections.IDictionary] $Groups,
-        [string[]][ValidateSet('Add', 'Remove')] $MembersBehaviour,
+        [string[]][ValidateSet('Add', 'Remove')] $MembersBehaviour = @('Add', 'Remove'),
         [bool] $ProtectedFromAccidentalDeletion,
         [ValidateSet('Add', 'Remove', 'Skip')][string[]] $LogOption = @('Add', 'Skip', 'Remove')
     )
