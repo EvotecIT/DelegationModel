@@ -4,7 +4,8 @@
         [Parameter(Mandatory)][string] $CanonicalNameOU,
         [Parameter(Mandatory)][System.Collections.IDictionary] $ConfigurationOU,
         [Parameter(Mandatory)][string] $BasePath,
-        [Parameter(Mandatory)][string] $DC
+        [Parameter(Mandatory)][string] $DC #,
+        #[bool] $ProtectedFromAccidentalDeletion
     )
     $IgnoredProperties = @('Delegation', 'DelegationInheritance', 'CanonicalNameOU')
     $OUProperties = @('Description', 'ProtectedFromAccidentalDeletion')
@@ -25,11 +26,11 @@
         if (-not $OrganizationalUnitExists) {
             try {
                 $newADOrganizationalUnitSplat = @{
-                    Name                            = $O
-                    Path                            = $LevelPath
-                    ProtectedFromAccidentalDeletion = $False
-                    Server                          = $DC
-                    ErrorAction                     = 'Stop'
+                    Name        = $O
+                    Path        = $LevelPath
+                    #ProtectedFromAccidentalDeletion = $False
+                    Server      = $DC
+                    ErrorAction = 'Stop'
                 }
                 if ($DirectRequest) {
                     foreach ($V in $ConfigurationOU.Keys) {
