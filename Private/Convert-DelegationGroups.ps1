@@ -30,7 +30,7 @@
     [CmdletBinding()]
     param(
         [System.Collections.IDictionary[]] $GroupInformation,
-        [System.Collections.IDictionary[]] $Groups,
+        [System.Collections.IDictionary] $Groups,
         [string] $Destination,
         [string[]][ValidateSet('Add', 'Remove')] $MembersBehaviour,
         [bool] $ProtectedFromAccidentalDeletion
@@ -55,7 +55,7 @@
         }
         $GroupsInfo
     } else {
-        foreach ($GroupName in $Groups.Keys) {
+        foreach ($GroupName in [string[]] $Groups.Keys) {
             $Group = $Groups[$GroupName]
             $Groups[$GroupName] = [ordered] @{
                 Name                            = $Group.Name
