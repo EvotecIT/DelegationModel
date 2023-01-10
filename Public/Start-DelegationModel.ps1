@@ -79,7 +79,7 @@
     Write-Color '[i]', "[DelegationModel] ", 'Managing Organizational Units' -Color Yellow, DarkGray, Yellow
     foreach ($CanonicalNameOU in $Definition.Keys) {
         $ConfigurationOU = $Definition[$CanonicalNameOU]
-        New-OUStructure -CanonicalNameOU $CanonicalNameOU -ConfigurationOU $ConfigurationOU -BasePath $BasePath -DC $DC
+        New-OUStructure -CanonicalNameOU $CanonicalNameOU -ConfigurationOU $ConfigurationOU -BasePath $BasePath -DC $DC # -ProtectedFromAccidentalDeletion $ProtectedFromAccidentalDeletion
     }
     Write-Color '[i]', "[DelegationModel] ", 'Managing Delegation' -Color Yellow, DarkGray, Yellow
     foreach ($CanonicalNameOU in $Definition.Keys) {
