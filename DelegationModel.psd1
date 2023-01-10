@@ -31,7 +31,7 @@
             ModuleName    = 'PSWriteHTML'
             Guid          = 'a7bdf640-f5cb-4acf-9de0-365b322d245c'
         }, @{
-            ModuleVersion = '0.0.150'
+            ModuleVersion = '0.0.151'
             ModuleName    = 'ADEssentials'
             Guid          = '9fc9fd61-7f11-4f4b-a527-084086f1905f'
         }, 'ActiveDirectory')
