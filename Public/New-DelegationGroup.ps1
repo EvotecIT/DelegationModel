@@ -3,7 +3,7 @@
     param(
         [Parameter(Mandatory)][string] $Name,
         [string] $DisplayName,
-        [Parameter(Mandatory)][string] $Path,
+        [Parameter()][string] $Path,
         [string] $Description,
         [Parameter(Mandatory)]
         [Microsoft.ActiveDirectory.Management.ADGroupScope] $GroupScope = [Microsoft.ActiveDirectory.Management.ADGroupScope]::DomainLocal,
