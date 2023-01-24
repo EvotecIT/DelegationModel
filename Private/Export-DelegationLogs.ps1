@@ -13,7 +13,7 @@
                 }
                 $Action = 'Skipping'
                 $ActionSign = '[s]'
-                $ActionColor = [System.ConsoleColor]::DarkMagenta
+                $ActionColor = [System.ConsoleColor]::Magenta
             } elseif ($Type -eq 'Add') {
                 if ($LogOption -notcontains 'Add') {
                     continue
@@ -31,7 +31,7 @@
             } elseif ($Type -eq 'Warnings') {
                 $Action = 'Warning'
                 $ActionSign = '[!]'
-                $ActionColor = [System.ConsoleColor]::DarkMagenta
+                $ActionColor = [System.ConsoleColor]::Magenta
                 Write-Color -Text $ActionSign, "[$($CanonicalNameOU)]", "[$Action] ", $D -Color $ActionColor, DarkGray, $ActionColor, White
                 continue
             } elseif ($Type -eq 'Errors') {
