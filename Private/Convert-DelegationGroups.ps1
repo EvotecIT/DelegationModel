@@ -36,12 +36,27 @@
         [bool] $ProtectedFromAccidentalDeletion
 
     )
+    $Count = 0
     if ($GroupInformation) {
         $GroupsInfo = [ordered] @{}
         foreach ($Group in $GroupInformation) {
-            $GroupsInfo[$Group.Name] = [ordered] @{
-                Name                            = $Group.Name
-                DisplayName                     = if (-not $Group.DisplayName) { $Group.Name } else { $Group.DisplayName }
+            $Count++
+            $GroupNameToUse = $Group.Name + $Count
+
+            if (-not $Group.Name) {
+                $DefaultGroupName = $GroupName
+            } else {
+                $DefaultGroupName = $Group.Name
+            }
+            if (-not $Group.DisplayName) {
+                $DefaultGroupDisplayName = $DefaultGroupName
+            } else {
+                $DefaultGroupDisplayName = $Group.DisplayName
+            }
+
+            $GroupsInfo[$GroupNameToUse] = [ordered] @{
+                Name                            = $DefaultGroupName
+                DisplayName                     = $DefaultGroupDisplayName
                 Path                            = if ($Group.Path) { $Group.Path } else { $Destination }
                 Description                     = $Group.Description
                 GroupScope                      = $Group.GroupScope
@@ -51,15 +66,29 @@
                 Members                         = if ($Group.Members) { $Group.Members } else { $null }
                 MemberOf                        = if ($Group.MemberOf) { $Group.MemberOf } else { $null }
             }
-            Remove-EmptyValue -Hashtable $GroupsInfo[$Group.Name]
+            Remove-EmptyValue -Hashtable $GroupsInfo[$GroupNameToUse]
         }
         $GroupsInfo
     } else {
+        $GroupsInfo = [ordered] @{}
         foreach ($GroupName in [string[]] $Groups.Keys) {
+            $Count++
             $Group = $Groups[$GroupName]
-            $Groups[$GroupName] = [ordered] @{
-                Name                            = $Group.Name
-                DisplayName                     = if (-not $Group.DisplayName) { $Group.Name } else { $Group.DisplayName }
+            $GroupNameToUse = $GroupName + $Count
+
+            if (-not $Group.Name) {
+                $DefaultGroupName = $GroupName
+            } else {
+                $DefaultGroupName = $Group.Name
+            }
+            if (-not $Group.DisplayName) {
+                $DefaultGroupDisplayName = $DefaultGroupName
+            } else {
+                $DefaultGroupDisplayName = $Group.DisplayName
+            }
+            $GroupsInfo[$GroupNameTouse] = [ordered] @{
+                Name                            = $DefaultGroupName
+                DisplayName                     = $DefaultGroupDisplayName
                 Path                            = if ($Group.Path) { $Group.Path } else { $Destination }
                 Description                     = $Group.Description
                 GroupScope                      = $Group.GroupScope
@@ -69,8 +98,8 @@
                 Members                         = if ($Group.Members) { $Group.Members } else { $null }
                 MemberOf                        = if ($Group.MemberOf) { $Group.MemberOf } else { $null }
             }
-            Remove-EmptyValue -Hashtable $Groups[$GroupName]
+            Remove-EmptyValue -Hashtable $GroupsInfo[$GroupNameToUse]
         }
-        $Groups
+        $GroupsInfo
     }
 }
