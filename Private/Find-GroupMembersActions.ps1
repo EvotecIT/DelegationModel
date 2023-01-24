@@ -2,7 +2,7 @@
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(Mandatory)][string] $Identity,
-        [parameter(Mandatory)][Array] $ExpectedMembers,
+        [parameter()][Array] $ExpectedMembers,
         [parameter(Mandatory)][string] $DC,
         [parameter(Mandatory)][string[]] $MembersBehaviour,
         [ValidateSet('Add', 'Remove', 'Skip')][string[]] $LogOption
