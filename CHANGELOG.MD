@@ -1,4 +1,11 @@
 ﻿
+### 0.0.4
+- Fixes issue with members/memberof for statically named groups
+- Adjusted some colors that should look better on PowerShell 5.1
+- Reworked some internal logic
+- Improved output to logs
+- Added logging for DelegationGroups
+
 ### 0.0.3
 - Added `MembersBehaviour` to both `New-DelegationGroup` and `Start-DelegationGroups` that controls Members action (Add, Remove)
 - Added new way to manage groups, the old one is still valid
