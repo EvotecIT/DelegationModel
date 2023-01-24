@@ -10,7 +10,7 @@
         [ValidateSet('Add', 'Remove', 'Skip')][string[]] $LogOption
     )
     if ($LogOption -contains 'Skip') {
-        Write-Color -Text '[s] ', "Group ", $Group, " already exists" -Color DarkMagenta, White, DarkMagenta, White
+        Write-Color -Text '[s] ', "Group ", $Group, " already exists" -Color Magenta, White, Magenta, White
     }
     foreach ($Key in $PropertiesChangable) {
         # we need to check whether key is defined at all and user wants to update it
