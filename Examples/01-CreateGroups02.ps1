@@ -1,7 +1,7 @@
 ﻿Import-Module .\DelegationModel.psd1 -Force
 
 # Similar to Examples\01-CreateGroups01.ps1 - Alternative way to create/manage groups
-$AdministrativeUnits = 'FR_IT_Team08', 'FR_IT_Team09', 'FR_IT_Team06','FR_IT_Team03'
+$AdministrativeUnits = 'FR_IT_Team08', 'FR_IT_Team09' #, 'FR_IT_Team06','FR_IT_Team03'
 $DomainDN = "DC=ad,DC=evotec,DC=xyz"
 $OUPath = "OU=Administration_Tasks_Groups,OU=Administration,$DomainDN"
 
@@ -37,26 +37,26 @@ Start-DelegationGroups -MembersBehaviour 'Add', 'Remove' -Destination 'OU=Delega
             "DL_Tier2_Groups_B_$AdministrativeUnit"
         )
         New-DelegationGroup -Name "GG_Tier2_LDAP_Admins_$AdministrativeUnit" -Path $OUPath -GroupScope 'DomainLocal' -GroupCategory 'Security' -Members @(
-            # add members if needed
+           # add members if needed
         ) -MemberOf @(
-            "DL_Tier2_LAPS_A_Administrator_$AdministrativeUnit"
+           "DL_Tier2_LAPS_A_Administrator_$AdministrativeUnit"
         )
         $newDelegationGroupSplat = @{
-            Name          = "GG_Tier2_Multiple_Objects_Admins_$AdministrativeUnit"
-            Path          = $OUPath
-            GroupScope    = 'DomainLocal'
-            GroupCategory = 'Security'
-            Members       = @(
-                #'przemyslaw.klys'
-                #'dennis.vanburen'
-            )
-            MemberOf      = @(
-                "DL_Tier2_PUIDs_A_$AdministrativeUnit"
-                "DL_Tier2_Groups_A_$AdministrativeUnit"
-                "DL_Tier2_Contacts_A_$AdministrativeUnit"
-                "DL_Tier2_Computers_A_$AdministrativeUnit"
-                "DL_Tier2_LAPS_A_Administrator_$AdministrativeUnit"
-            )
+           Name          = "GG_Tier2_Multiple_Objects_Admins_$AdministrativeUnit"
+           Path          = $OUPath
+           GroupScope    = 'DomainLocal'
+           GroupCategory = 'Security'
+           Members       = @(
+               #'przemyslaw.klys'
+               #'dennis.vanburen'
+           )
+           MemberOf      = @(
+               "DL_Tier2_PUIDs_A_$AdministrativeUnit"
+               "DL_Tier2_Groups_A_$AdministrativeUnit"
+               "DL_Tier2_Contacts_A_$AdministrativeUnit"
+               "DL_Tier2_Computers_A_$AdministrativeUnit"
+               "DL_Tier2_LAPS_A_Administrator_$AdministrativeUnit"
+           )
         }
         New-DelegationGroup @newDelegationGroupSplat -MembersBehaviour 'Add', 'Remove'
     }
