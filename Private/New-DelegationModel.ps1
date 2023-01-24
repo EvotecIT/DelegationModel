@@ -11,7 +11,7 @@
     if ($null -ne $ConfigurationOU.DelegationInheritance) {
         Set-ADACLInheritance -ADObject $DNOU -Inheritance $ConfigurationOU.DelegationInheritance -WarningAction SilentlyContinue -WarningVariable warnings #-ErrorVariable errors -ErrorAction SilentlyContinue
         foreach ($W in $Warnings) {
-            Write-Color -Text "[!]", "[$CanonicalNameOU]", "[Warning]", " ACL Inheritance: $($W)" -Color DarkMagenta, DarkGray, DarkMagenta, White
+            Write-Color -Text "[!]", "[$CanonicalNameOU]", "[Warning]", " ACL Inheritance: $($W)" -Color Magenta, DarkGray, Magenta, White
         }
         # foreach ($E in $Errors) {
         #     Write-Color -Text "[!]", "[$CanonicalNameOU]", "[Error]", " ACL Inheritance: $($E.Exception.Message)" -Color Red, DarkGray, Red, White
