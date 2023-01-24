@@ -48,16 +48,16 @@
                 }
             } catch {
                 if ($_.Exception.Message -notlike '*with a name that is already in use*') {
-                    Write-Color -Text '[!]', "[$CanonicalCurrentPath]", "[Error]", " Error $($_.Exception.message)" -Color Red, DarkGray, Yellow, DarkMagenta, White
+                    Write-Color -Text '[!]', "[$CanonicalCurrentPath]", "[Error]", " Error $($_.Exception.message)" -Color Red, DarkGray, Yellow, Magenta, White
                 } else {
                     if ($DirectRequest) {
-                        Write-Color -Text '[*]', "[$CanonicalCurrentPath]", "[Skipping]", " Skipped new organizational unit, already exists!" -Color DarkMagenta, DarkGray, Yellow, DarkMagenta, White
+                        Write-Color -Text '[*]', "[$CanonicalCurrentPath]", "[Skipping]", " Skipped new organizational unit, already exists!" -Color Magenta, DarkGray, Yellow, Magenta, White
                     }
                 }
             }
         } else {
             if ($DirectRequest) {
-                Write-Color -Text '[*]', "[$CanonicalCurrentPath]", "[Skipping]", " Skipped new organizational unit, already exists!" -Color DarkMagenta, DarkGray, Yellow, DarkMagenta, White
+                Write-Color -Text '[*]', "[$CanonicalCurrentPath]", "[Skipping]", " Skipped new organizational unit, already exists!" -Color Magenta, DarkGray, Yellow, Magenta, White
             }
         }
         if ($DirectRequest) {
