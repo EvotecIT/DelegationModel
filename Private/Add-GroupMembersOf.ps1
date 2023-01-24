@@ -7,7 +7,12 @@
         [ValidateSet('Add', 'Remove', 'Skip')][string[]] $LogOption
     )
     $CacheMembers = [ordered] @{}
-    $MemberExists = Get-ADGroupMember -Identity $Identity -Server $DC
+    try {
+        $MemberExists = Get-ADGroupMember -Identity $Identity -Server $DC -ErrorAction Stop
+    } catch {
+        Write-Color -Text '[!] ', "Member ", $Group, " addition to $Identity failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
+        return
+    }
     foreach ($Member in $MemberExists) {
         $CacheMembers[$Member.SamAccountName] = $Member
         $CacheMembers[$Member.DistinguishedName] = $Member
@@ -16,7 +21,7 @@
     try {
         if ($CacheMembers[$Group]) {
             if ($LogOption -contains 'Skip') {
-                Write-Color -Text '[s] ', "Member ", $Group, " already exists in ", $Identity -Color DarkMagenta, Yellow, DarkMagenta, Yellow
+                Write-Color -Text '[s] ', "Member ", $Group, " already exists in ", $Identity -Color Magenta, Yellow, Magenta, Yellow
             }
             continue
         }
