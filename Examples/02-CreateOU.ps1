@@ -27,4 +27,4 @@ $OUDefinition = @{
     }
 }
 
-Start-DelegationModel -Domain $Domain -Definition $OUDefinition -Verbose
+Start-DelegationModel -Domain $Domain -Definition $OUDefinition -Verbose -LogMaximum 5 -LogFile "$PSScriptRoot\Logs\Delegation_$((Get-Date).ToString('yyyy-MM-dd_HH_mm_ss')).log"
