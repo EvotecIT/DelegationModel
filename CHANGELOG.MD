@@ -1,4 +1,7 @@
 ﻿
+### 0.0.5
+- Fixes an issue with members being incorrectly added to non-existing group
+
 ### 0.0.4
 - Fixes issue with members/memberof for statically named groups
 - Adjusted some colors that should look better on PowerShell 5.1
