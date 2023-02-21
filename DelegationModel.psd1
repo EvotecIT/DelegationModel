@@ -8,7 +8,7 @@
     Description          = 'DelegationModel is a PowerShell module to create and manage delegation model'
     FunctionsToExport    = @('New-DelegationGroup', 'New-DelegationOrganizationalUnit', 'Start-DelegationGroups', 'Start-DelegationModel')
     GUID                 = '25a17911-7a7a-4c86-8543-aefb907874f7'
-    ModuleVersion        = '0.0.5'
+    ModuleVersion        = '0.0.6'
     PowerShellVersion    = '5.1'
     PrivateData          = @{
         PSData = @{
