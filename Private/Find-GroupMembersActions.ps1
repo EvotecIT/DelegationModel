@@ -17,19 +17,19 @@
 
     $MemberToAdd = foreach ($Member in $ExpectedMembers) {
         if ($CacheMembers[$Member]) {
-            #Write-Color -Text '[-] ', "Member ", $Member, " already exists in ", $Group -Color Red, Yellow, Red, Yellow
+            #Write-Color -Text '[-] ', "Member ", $Member, " already exists in ", $Identity -Color Red, Yellow, Red, Yellow
             continue
         } else {
-            #Write-Color -Text '[+] ', "Member ", $Member, " will be added to ", $Group -Color Green, Yellow, Green, Yellow
+            #Write-Color -Text '[+] ', "Member ", $Member, " will be added to ", $Identity -Color Green, Yellow, Green, Yellow
             $Member
         }
     }
     $MemberToRemove = foreach ($Member in $MemberExists) {
         if ($Member.SamAccountName -notin $ExpectedMembers -and $Member.distinguishedName -notin $ExpectedMembers -and $Member.SID.Value -notin $ExpectedMembers) {
-            #Write-Color -Text '[-] ', "Member ", $Member, " will be removed from ", $Group -Color Red, Yellow, Red, Yellow
+            #Write-Color -Text '[-] ', "Member ", $Member, " will be removed from ", $Identity -Color Red, Yellow, Red, Yellow
             $Member
         } else {
-            #Write-Color -Text '[+] ', "Member ", $Member, " already exists in ", $Group -Color Green, Yellow, Green, Yellow
+            #Write-Color -Text '[+] ', "Member ", $Member, " already exists in ", $Identity -Color Green, Yellow, Green, Yellow
             continue
         }
     }
@@ -37,24 +37,24 @@
     if ($MembersBehaviour -contains 'Remove') {
         foreach ($Member in $MemberToRemove) {
             try {
-                Remove-ADGroupMember -Identity $Group -Members $Member -ErrorAction Stop -Confirm:$false -Server $DC
+                Remove-ADGroupMember -Identity $Identity -Members $Member -ErrorAction Stop -Confirm:$false -Server $DC
                 if ($LogOption -contains 'Remove') {
-                    Write-Color -Text '[+] ', "Member ", $Member, " removed from $Group" -Color Green, White, Green, White
+                    Write-Color -Text '[+] ', "Member ", $Member, " removed from $Identity" -Color Green, White, Green, White
                 }
             } catch {
-                Write-Color -Text '[!] ', "Member ", $Member, " removal from $Group failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
+                Write-Color -Text '[!] ', "Member ", $Member, " removal from $Identity failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
             }
         }
     }
     if ($MembersBehaviour -contains 'Add') {
         foreach ($Member in $MemberToAdd) {
             try {
-                Add-ADGroupMember -Identity $Group -Members $Member -ErrorAction Stop -Server $DC
+                Add-ADGroupMember -Identity $Identity -Members $Member -ErrorAction Stop -Server $DC
                 if ($LogOption -contains 'Add') {
-                    Write-Color -Text '[+] ', "Member ", $Member, " added to $Group" -Color Green, White, Green, White
+                    Write-Color -Text '[+] ', "Member ", $Member, " added to $Identity" -Color Green, White, Green, White
                 }
             } catch {
-                Write-Color -Text '[!] ', "Member ", $Member, " addition to $Group failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
+                Write-Color -Text '[!] ', "Member ", $Member, " addition to $Identity failed. Error: ", $_.Exception.Message -Color Red, Yellow, Red, Yellow
             }
         }
     }
