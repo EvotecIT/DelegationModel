@@ -1,14 +1,14 @@
 ﻿<p align="center">
-  <a href="https://www.powershellgallery.com/packages/DelegtionModel"><img src="https://img.shields.io/powershellgallery/v/DelegtionModel.svg"></a>
-  <a href="https://www.powershellgallery.com/packages/DelegtionModel"><img src="https://img.shields.io/powershellgallery/vpre/DelegtionModel.svg?label=powershell%20gallery%20preview&colorB=yellow"></a>
-  <a href="https://github.com/EvotecIT/DelegtionModel"><img src="https://img.shields.io/github/license/EvotecIT/DelegtionModel.svg"></a>
+  <a href="https://www.powershellgallery.com/packages/DelegationModel"><img src="https://img.shields.io/powershellgallery/v/DelegationModel.svg"></a>
+  <a href="https://www.powershellgallery.com/packages/DelegationModel"><img src="https://img.shields.io/powershellgallery/vpre/DelegationModel.svg?label=powershell%20gallery%20preview&colorB=yellow"></a>
+  <a href="https://github.com/EvotecIT/DelegationModel"><img src="https://img.shields.io/github/license/EvotecIT/DelegationModel.svg"></a>
 </p>
 
 <p align="center">
-  <a href="https://www.powershellgallery.com/packages/DelegtionModel"><img src="https://img.shields.io/powershellgallery/p/DelegtionModel.svg"></a>
-  <a href="https://github.com/EvotecIT/DelegtionModel"><img src="https://img.shields.io/github/languages/top/evotecit/DelegtionModel.svg"></a>
-  <a href="https://github.com/EvotecIT/DelegtionModel"><img src="https://img.shields.io/github/languages/code-size/evotecit/DelegtionModel.svg"></a>
-  <a href="https://www.powershellgallery.com/packages/DelegtionModel"><img src="https://img.shields.io/powershellgallery/dt/DelegtionModel.svg"></a>
+  <a href="https://www.powershellgallery.com/packages/DelegationModel"><img src="https://img.shields.io/powershellgallery/p/DelegationModel.svg"></a>
+  <a href="https://github.com/EvotecIT/DelegationModel"><img src="https://img.shields.io/github/languages/top/evotecit/DelegationModel.svg"></a>
+  <a href="https://github.com/EvotecIT/DelegationModel"><img src="https://img.shields.io/github/languages/code-size/evotecit/DelegationModel.svg"></a>
+  <a href="https://www.powershellgallery.com/packages/DelegationModel"><img src="https://img.shields.io/powershellgallery/dt/DelegationModel.svg"></a>
 </p>
 
 <p align="center">
@@ -17,9 +17,9 @@
   <a href="https://www.linkedin.com/in/pklys"><img src="https://img.shields.io/badge/LinkedIn-pklys-0077B5.svg?logo=LinkedIn"></a>
 </p>
 
-# DelegtionModel
+# DelegationModel
 
-**DelegtionModel** PowerShell module provides a simplified way to manage delegation in Active Directory. It's based on [ADEssentials](https://github.com/EvotecIT/ADEssentials) module and builts on top of it. This module is *Work in Progress* and requires further testing.
+**DelegationModel** PowerShell module provides a simplified way to manage delegation in Active Directory. It's based on [ADEssentials](https://github.com/EvotecIT/ADEssentials) module and builts on top of it. This module is *Work in Progress* and requires further testing.
 
 ## ToDO
 
