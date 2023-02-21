@@ -36,3 +36,5 @@
 - [ ] Add file/folder for Sysvol and Netlogon delegation
 - [ ] Backup / Restore
 - [ ] Verify delegation model
+- [ ] Validation of Names in New-ADACLObject (check if it's a valid name and if not stop
+- [ ] Detect ProtectedFromAccidentalDeletion and Everyone being affected
