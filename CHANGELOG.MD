@@ -1,4 +1,6 @@
-﻿
+﻿### 0.0.6
+- Fixes missing function
+
 ### 0.0.5
 - Fixes an issue with members being incorrectly added to non-existing group
 
