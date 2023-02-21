@@ -1,7 +1,7 @@
 ﻿Import-Module .\DelegationModel.psd1 -Force
 
 # Similar to Examples\01-CreateGroups01.ps1 - Alternative way to create/manage groups
-$AdministrativeUnits = 'FR_IT_Team08', 'FR_IT_Team09' #, 'FR_IT_Team06','FR_IT_Team03'
+$AdministrativeUnits = 'FR_IT_Team08', 'FR_IT_Team09', 'FR_IT_Team06','FR_IT_Team03'
 $DomainDN = "DC=ad,DC=evotec,DC=xyz"
 $OUPath = "OU=Administration_Tasks_Groups,OU=Administration,$DomainDN"
 
@@ -47,8 +47,8 @@ Start-DelegationGroups -MembersBehaviour 'Add', 'Remove' -Destination 'OU=Delega
            GroupScope    = 'DomainLocal'
            GroupCategory = 'Security'
            Members       = @(
-               #'przemyslaw.klys'
-               #'dennis.vanburen'
+               'przemyslaw.klys'
+               'dennis.vanburen'
            )
            MemberOf      = @(
                "DL_Tier2_PUIDs_A_$AdministrativeUnit"

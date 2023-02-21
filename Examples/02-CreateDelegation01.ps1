@@ -3,16 +3,16 @@ Import-Module C:\Support\GitHub\ADEssentials\ADEssentials.psd1 -Force
 
 $AdministrativeUnit = 'FR_IT_Team06'
 
-Start-DelegationModel -Domain 'ad.evotec.xyz' -ProtectedFromAccidentalDeletion $true -Verbose {
+Start-DelegationModel -Domain 'ad.evotec.xyz' -ProtectedFromAccidentalDeletion $false -Verbose {
     New-DelegationOU -CanonicalNameOU "Tier2\Accounts01" -DelegationInheritance 'Disabled' -Delegation @(
         Export-ADACLObject -ADObject 'DC=ad,DC=evotec,DC=xyz' -OneLiner -ExcludePrincipal @(
             'BUILTIN\Pre-Windows 2000 Compatible Access'
             'EVOTEC\Exchange Servers'
             'EVOTEC\Delegated Setup'
-            'Everyone'
+            # 'Everyone' - removing everyone will be problematic for ProtectedFromAccidentalDeletion
         )
         New-ADACLObject -Principal 'przemyslaw.klys' -AccessControlType Allow -ObjectType All -InheritedObjectTypeName All -AccessRule GenericAll -InheritanceType None
-    ) -ProtectedFromAccidentalDeletion $true
+    ) -ProtectedFromAccidentalDeletion $false
 
     New-DelegationOU -CanonicalNameOU "Tier2\Devices\$AdministrativeUnit" -DelegationInheritance Enabled -Delegation @(
         New-ADACLObject -Principal 'przemyslaw.klys' -AccessControlType Allow -ObjectType All -InheritedObjectTypeName 'All' -AccessRule GenericAll -InheritanceType None
@@ -31,7 +31,7 @@ Start-DelegationModel -Domain 'ad.evotec.xyz' -ProtectedFromAccidentalDeletion $
         New-ADACLObject -Principal "DL_Tier2_OU_$AdministrativeUnit" -AccessControlType Allow -ObjectType organizationalUnit -InheritedObjectTypeName OrganizationalUnit -AccessRule 'CreateChild', 'DeleteChild' -InheritanceType Descendents
         New-ADACLObject -Principal "DL_Tier2_OU_$AdministrativeUnit" -AccessControlType Allow -ObjectType organizationalUnit -InheritedObjectTypeName OrganizationalUnit -AccessRule 'DeleteChild' -InheritanceType Descendents
 
-
+        New-ADACLObject -Principal "Test" -SimplifiedDelegation ComputerDomainJoin -AccessControlType Allow -InheritanceType All
     ) -Description "Accounts for users in $AdministrativeUnit" -ProtectedFromAccidentalDeletion $false
 
     New-DelegationOU -CanonicalNameOU "Tier2\DevicesVIP\$AdministrativeUnit" -DelegationInheritance Enabled -Delegation @(
