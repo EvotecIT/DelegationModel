@@ -19,15 +19,15 @@
 
 # DelegtionModel
 
-**DelegtionModel** PowerShell module provides a simplified way to manage delegation in Active Directory. It's based on [ADEssentials](https://github.com/EvotecIT/ADEssentials) module and builts on top of it.
+**DelegtionModel** PowerShell module provides a simplified way to manage delegation in Active Directory. It's based on [ADEssentials](https://github.com/EvotecIT/ADEssentials) module and builts on top of it. This module is *Work in Progress* and requires further testing.
 
 ## ToDO
 
 - [ ] add support for changing group scope
 - [x] add support for moving groups based on path change
-- [ ] add support for reruning the script multiple times until nothing is left
-- [ ] add support for members behavior (replace, add, remove)
-- [ ] add support for ProtectedFromAccidentalDeletion
+- [x] add support for reruning the script multiple times until nothing is left
+- [x] add support for members behavior (replace, add, remove)
+- [x] add support for ProtectedFromAccidentalDeletion
 - [ ] add support for AuditMode
   - [ ] Groups
   - [ ] Delegation
