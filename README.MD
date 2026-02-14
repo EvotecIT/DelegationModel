@@ -1,6 +1,6 @@
 ﻿<p align="center">
   <a href="https://www.powershellgallery.com/packages/DelegationModel"><img src="https://img.shields.io/powershellgallery/v/DelegationModel.svg"></a>
-  <a href="https://www.powershellgallery.com/packages/DelegationModel"><img src="https://img.shields.io/powershellgallery/vpre/DelegationModel.svg?label=powershell%20gallery%20preview&colorB=yellow"></a>
+  <a href="https://www.powershellgallery.com/packages/DelegationModel"><img src="https://img.shields.io/powershellgallery/v/DelegationModel.svg?label=powershell%20gallery%20preview&colorB=yellow&include_prereleases"></a>
   <a href="https://github.com/EvotecIT/DelegationModel"><img src="https://img.shields.io/github/license/EvotecIT/DelegationModel.svg"></a>
 </p>
 
